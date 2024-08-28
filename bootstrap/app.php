@@ -16,7 +16,7 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
         then: function() {
             Route::bind('article', function($value) {
-                return Article::whereId($value)->orWhereSlug($value)->firstOrFail();
+                return Article::whereId($value)->orWhere('slug', $value)->firstOrFail();
             });
         })->withMiddleware(function(Middleware $middleware) {
         $middleware->api(prepend: [

@@ -46,6 +46,10 @@ class User extends Authenticatable {
         ];
     }
 
+    public function id(): string {
+        return (string)$this->id;
+    }
+
     public function name(): string {
         return $this->name;
     }
