@@ -7,6 +7,7 @@ use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Support\Facades\Route;
 use Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -29,5 +30,17 @@ return Application::configure(basePath: dirname(__DIR__))
 
         //
     })->withExceptions(function(Exceptions $exceptions) {
-        //
+        $exceptions->renderable(function(NotFoundHttpException $exception, $request) {
+            if($request->is('api/*')) {
+                return response()->json([
+                    'error' => [
+                        'message' => 'Resource not found',
+                        'type' => 'NotFoundHttpException',
+                        'code' => 404,
+                        'link' => 'example.com/link',
+                        'status_code' => (string)$exception->getStatusCode()
+                    ]
+                ]);
+            }
+        });
     })->create();
