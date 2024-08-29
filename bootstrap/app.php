@@ -40,7 +40,7 @@ return Application::configure(basePath: dirname(__DIR__))
                         'link' => 'example.com/link',
                         'status_code' => (string)$exception->getStatusCode()
                     ]
-                ]);
+                ], 404);
             }
         });
     })->create();
